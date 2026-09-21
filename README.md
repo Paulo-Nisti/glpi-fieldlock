@@ -28,7 +28,7 @@ Bloqueia apenas a **edição** (em chamados **já criados**) de:
 
 - O **preenchimento** de Título/Descrição/"Por" na **criação** de um novo chamado;
 
-- A **adição de novos acompanhamentos** — pela interface ou vindos de **e-mail** (a resposta do requerente que o `mailcollector` transforma em acompanhamento continua funcionando). Em resumo: *o problema não é receber acompanhamento novo, é editar o que já está registrado*;
+- A **adição de novos acompanhamentos** — pela interface ou vindos de **e-mail** (a resposta do requerente que o `mailcollector` transforma em acompanhamento continua funcionando).
 
 - Os **atores** do chamado — em especial o **requerente/solicitante**, que pode ser **diferente do criador** e, portanto, continua editável; observadores, responsáveis e fornecedores também.
 
