@@ -2,7 +2,7 @@
 
 Plugin para o **GLPI 11** que bloqueia, de forma **configurável**, apenas a **edição** de campos específicos do chamado, sem mexer no banco de dados e sem desabilitar o botão "Editar".
 
-> Criado para a necessidade da equipe de infra: os campos **Título, Descrição, "Por" e Acompanhamento** de um chamado não podem ser alterados após a criação.
+> Criado para suprir as necessidades da equipe: os campos **Título, Descrição, "Por" e Acompanhamento** de um chamado não podem ser alterados após a criação.
 
 - **Versão:** 1.0.0
 
@@ -20,7 +20,7 @@ Bloqueia apenas a **edição** (em chamados **já criados**) de:
 
 - **Descrição** (`content`);
 
-- **"Por"** (`users\_id\_recipient` — criador/solicitante primário do chamado), **sempre** protegido (não tem opção de configuração);
+- **"Por"** (`users_id_recipient` — criador/solicitante primário do chamado), **sempre** protegido (não tem opção de configuração);
 
 - **Acompanhamento já registrado** (`ITILFollowup`) — edição manual (interface) ou automática (cron/CLI).
 
@@ -38,48 +38,48 @@ Ao contrário de desmarcar o direito "update" (o que bloqueia **todo** o chamado
 
 ## Requisitos e impacto no banco de dados
 
-- **GLPI 11.0.0 ou superior** (valores configurados via `Config` do GLPI, na tabela `glpi\_configs`).
+- **GLPI 11.0.0 ou superior** (valores configurados via `Config` do GLPI, na tabela `glpi_configs`).
 
 - **Nenhuma tabela é criada** e nenhum schema é alterado.
 
-- Na **instalação**, o plugin grava apenas **3 linhas em `glpi\_configs`** (contexto `fieldlock`: `protect\_title`, `protect\_description`, `protect\_followup\_edit`). A **desinstalação** apaga essas 3 linhas.
+- Na **instalação**, o plugin grava apenas **3 linhas em `glpi_configs`** (contexto `fieldlock`: `protect_title`, `protect_description`, `protect_followup_edit`). A **desinstalação** apaga essas 3 linhas.
 
 - Em **operação normal**, o plugin apenas **lê** a configuração e **reverte** os campos protegidos — não insere, altera nem apaga dados de chamados por conta própria.
 
 ## Estrutura do repositório
 
 ```
-├── setup.php        \# Instalação, desinstalação e metadados (GLPI 11)  
-├── hook.php         \# Hooks pre\_item\_update (Ticket e ITILFollowup)  
-├── plugin.xml       \# Metadados para o instalador / Marketplace  
-├── INSTALL.md       \# Guia completo de instalação do plugin  
+├── setup.php        # Instalação, desinstalação e metadados (GLPI 11)  
+├── hook.php         # Hooks pre_item_update (Ticket e ITILFollowup)  
+├── plugin.xml       # Metadados para o instalador / Marketplace  
+├── INSTALL.md       # Guia completo de instalação do plugin  
 ├── front/  
-│   ├── config.php       \# Tela de configuração (GET)  
-│   └── config.form.php  \# Salva a configuração (POST)  
+│   ├── config.php       # Tela de configuração (GET)  
+│   └── config.form.php  # Salva a configuração (POST)  
 └── locales/  
-    └── pt\_BR.php    \# Tradução / mensagens
+    └── pt_BR.php    # Tradução / mensagens
 ```
 
-> Nota sobre nomes de funções no GLPI 11: as funções de manutenção seguem a convenção `plugin\_\<chave\>\_\<ação\>` (ex.: `plugin\_fieldlock\_install()`). O padrão antigo `plugin\_install\_\<chave\>` **não funciona** no GLPI 11. Detalhes no [INSTALL.md](file:///C:/Users/robson.matos/Documents/projeto-fieldlock/INSTALL.md).
+> Nota sobre nomes de funções no GLPI 11: as funções de manutenção seguem a convenção `plugin_<chave>_<ação>` (ex.: `plugin_fieldlock_install()`). O padrão antigo `plugin_install_<chave>` **não funciona** no GLPI 11. Detalhes no [INSTALL.md](INSTALL.md).
 
 ## Instalação (resumo)
 
-O guia completo está em [INSTALL.md](file:///C:/Users/robson.matos/Documents/projeto-fieldlock/INSTALL.md). Resumo:
+O guia completo está em [INSTALL.md](INSTALL.md). Resumo:
 
 1. **Backup preventivo:**
 
 ```
-mysqldump -u root -p glpi \> backup.sql
+mysqldump -u root -p glpi > backup.sql
 
-docker exec glpi\_db mysqldump -u root -p glpi \> backup.sql
+docker exec glpi_db mysqldump -u root -p glpi > backup.sql
 ```
 
-1. **Copie a pasta inteira** para `\<webroot\>/plugins/` (na imagem Docker oficial o webroot é `/var/www/glpi`). Use a **pasta inteira** — nunca `fieldlock/.` solta na raiz de `plugins/`:
+1. **Copie a pasta inteira** para `<webroot>/plugins/` (na imagem Docker oficial o webroot é `/var/www/glpi`). Use a **pasta inteira** — nunca `fieldlock/.` solta na raiz de `plugins/`:
 
 ```
-scp -r fieldlock/ usuario@servidor:\<WEBROOT\>/plugins/
+scp -r fieldlock/ usuario@servidor:<WEBROOT>/plugins/
 
-docker cp ~/fieldlock glpi\_web:/var/www/glpi/plugins/
+docker cp ~/fieldlock glpi_web:/var/www/glpi/plugins/
 ```
 
 1. **Permissões:**
@@ -98,7 +98,7 @@ php bin/console glpi:plugin:activate fieldlock
 
 ## Configuração
 
-1. **Configuração → Plugins** → na linha do plugin, clique em **"Configurar"** (ou acesse `http://SEU\_GLPI/plugins/fieldlock/front/config.php`).
+1. **Configuração → Plugins** → na linha do plugin, clique em **"Configurar"** (ou acesse `http://SEU_GLPI/plugins/fieldlock/front/config.php`).
 
 2. **Proteger Título do chamado** — Sim/Não (padrão **Sim**).
 
@@ -106,7 +106,7 @@ php bin/console glpi:plugin:activate fieldlock
 
 4. **Bloquear edição de Acompanhamento** — Sim/Não (padrão **Sim**). Bloqueia apenas a **edição** de acompanhamentos já registrados (manual ou automática). **Novos acompanhamentos continuam permitidos** (interface ou e-mail).
 
-> O campo **"Por"** (`users\_id\_recipient` — criador/solicitante primário) é sempre protegido, sem opção. Já o **ator requerente/solicitante** é editável — o requerente pode ser diferente do criador do chamado. Observadores, responsáveis e fornecedores também continuam livres.
+> O campo **"Por"** (`users_id_recipient` — criador/solicitante primário) é sempre protegido, sem opção. Já o **ator requerente/solicitante** é editável — o requerente pode ser diferente do criador do chamado. Observadores, responsáveis e fornecedores também continuam livres.
 
 Desmarcar uma opção libera aquele campo. As alterações valem na hora, sem reiniciar nada. Precisam de permissão de configurar o GLPI.
 
@@ -155,7 +155,7 @@ Desmarcar uma opção libera aquele campo. As alterações valem na hora, sem re
 | Edição de acompanhamento ainda funciona | "Bloquear edição de Acompanhamento" está desligado | Ative na tela de configuração |
 
 
-Mais cenários no [INSTALL.md](file:///C:/Users/robson.matos/Documents/projeto-fieldlock/INSTALL.md).
+Mais cenários no [INSTALL.md](INSTALL.md).
 
 ## Desinstalar o plugin
 
@@ -163,7 +163,7 @@ Mais cenários no [INSTALL.md](file:///C:/Users/robson.matos/Documents/projeto-f
 
 2. Exclua a pasta `fieldlock/` do diretório `plugins/`.
 
-A desinstalação também remove os valores gravados em `glpi\_configs`. O plugin não altera dados existentes (chamados, acompanhamentos anteriores).
+A desinstalação também remove os valores gravados em `glpi_configs`. O plugin não altera dados existentes (chamados, acompanhamentos anteriores).
 
 ## Licença
 
