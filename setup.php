@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Lock Ticket Fields - plugin setup file (GLPI 11)
+ * Fields Lock - plugin setup file (GLPI 11)
  *
  * Bloqueia, de forma CONFIGURAVEL, a EDICAO apenas dos campos:
  *   - TITULO (name) de chamados ja criados;
@@ -21,8 +21,6 @@
  *     criador do chamado, entao o ator requerente e livre; observadores,
  *     responsaveis e fornecedores tambem).
  *
- * Em resumo: "o problema nao e receber acompanhamento novo, e sim editar o que
- * ja esta registrado".
  *
  * Diferente de desmarcar a permissao "update" (que bloqueia TODO o chamado),
  * aqui o botao "Editar" continua disponivel e os demais campos (categoria,
