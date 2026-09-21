@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<root>
+   <name>Fields Lock</name>
+   <version>1.0.0</version>
+   <author>Robson Coe</author>
+   <homepage></homepage>
+   <license>GPLv2+</license>
+   <minimum>11.0.0</minimum>
+</root>
